@@ -228,7 +228,7 @@ axes[0].grid(True)
 axes[1].plot(
     time,
     sinr_db,
-    color="#510BF5",
+    color="#7300FF",
     linewidth=1.8
 )
 
@@ -244,7 +244,7 @@ axes[2].step(
     time,
     cqi,
     where="post",
-    color="#16A34A",
+    color="#80FF00",
     linewidth=1.8
 )
 
