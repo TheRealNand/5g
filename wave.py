@@ -33,6 +33,7 @@ time = np.arange(NUM_SAMPLES) * DT
 # ============================================================
 
 # Represents gradual changes caused by movement/environment.
+
 slow_variation = (
     3.0 * np.sin(2 * np.pi * 0.15 * time)
     + 1.5 * np.sin(2 * np.pi * 0.45 * time)
@@ -82,6 +83,7 @@ deterioration[start:end] = np.linspace(
 )
 
 # Recover afterwards
+
 deterioration[end:] = -10 * np.exp(
     -(np.arange(NUM_SAMPLES - end) / 250)
 )
@@ -111,6 +113,7 @@ interference = (
 )
 
 # Add an interference burst
+
 burst_start = int(NUM_SAMPLES * 0.40)
 burst_end = int(NUM_SAMPLES * 0.48)
 
@@ -159,10 +162,10 @@ sinr_db = linear_to_db(sinr_linear)
 # once the channel/link model is finalized.
 
 cqi_thresholds = np.array([
-    -5,  -3,  -1,   1,
-     3,   5,   7,   9,
-    11,  13,  15,  17,
-    19,  21,  23
+    -5, -3, -1, 1,
+     3,  5,  7, 9,
+    11, 13, 15, 17,
+    19, 21, 23
 ])
 
 cqi = np.digitize(sinr_db, cqi_thresholds)
@@ -194,30 +197,75 @@ print(df.head())
 # 10. VISUALIZATION
 # ============================================================
 
-fig, axes = plt.subplots(3, 1, figsize=(12, 9), sharex=True)
+fig, axes = plt.subplots(
+    3,
+    1,
+    figsize=(12, 9),
+    sharex=True
+)
 
+
+# ------------------------------------------------------------
 # RSRP
-axes[0].plot(time, rsrp)
+# ------------------------------------------------------------
+
+axes[0].plot(
+    time,
+    rsrp,
+    color="#C32626",
+    linewidth=1.8
+)
+
 axes[0].set_ylabel("RSRP (dBm)")
 axes[0].set_title("Time-Varying Wireless Channel")
 axes[0].grid(True)
 
+
+# ------------------------------------------------------------
 # SINR
-axes[1].plot(time, sinr_db)
+# ------------------------------------------------------------
+
+axes[1].plot(
+    time,
+    sinr_db,
+    color="#510BF5",
+    linewidth=1.8
+)
+
 axes[1].set_ylabel("SINR (dB)")
 axes[1].grid(True)
 
+
+# ------------------------------------------------------------
 # CQI
-axes[2].step(time, cqi, where="post")
+# ------------------------------------------------------------
+
+axes[2].step(
+    time,
+    cqi,
+    where="post",
+    color="#16A34A",
+    linewidth=1.8
+)
+
 axes[2].set_ylabel("CQI")
 axes[2].set_xlabel("Time (s)")
 axes[2].grid(True)
+
+
+# ------------------------------------------------------------
+# FINAL LAYOUT
+# ------------------------------------------------------------
 
 plt.tight_layout()
 
 plot_path = RESULTS_DIR / "channel_quality_vs_time.png"
 
-plt.savefig(plot_path, dpi=200)
+plt.savefig(
+    plot_path,
+    dpi=200
+)
+
 plt.show()
 
 print(f"\nPlot saved to: {plot_path}")
